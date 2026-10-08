@@ -2,7 +2,9 @@
 
 A Chrome extension that captions video calls in real time and translates them into Vietnamese.
 
-<!-- demo.gif -->
+<p align="center"><img src="docs/media/demo.gif" alt="The caption overlay on a mock sprint-planning call: English captions appear live with Vietnamese translations and a running summary" width="900"></p>
+
+<p align="center"><sub>Mock call with fictional participants and sample sentences, to show the overlay.</sub></p>
 
 ## Why
 
@@ -25,6 +27,12 @@ Works on Google Meet, Zoom, Microsoft Teams, Webex, Whereby, Amazon Chime and Sk
 1. Run `python3 create_icons.py` to generate the icons in `assets/` (standard library only). Pre-built icons are already included.
 2. Open `chrome://extensions` and turn on Developer mode.
 3. Click Load unpacked and select this folder.
+
+## Screenshots
+
+<p align="center"><img src="docs/media/options.png" alt="Options page with API key, language, session and display settings" width="480"></p>
+
+The options page: bring your own Gemini or OpenRouter key, pick the spoken language and set a session limit.
 
 ## Configuration
 
