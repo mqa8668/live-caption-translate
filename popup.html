@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <style>
+    body {
+      width: 272px;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      font-size: 13px;
+      background: #F5F1E8;
+      margin: 0;
+      padding: 14px;
+      color: #2B2B2B;
+    }
+    .logo {
+      display: flex; align-items: center; gap: 8px;
+      font-weight: 700; font-size: 14px; color: #1F5E3B;
+      margin-bottom: 10px;
+    }
+    /* ── Current tab indicator ── */
+    .tab-info {
+      background: white; border: 1px solid #D8D0C4;
+      border-radius: 6px; padding: 8px 10px;
+      margin-bottom: 10px; font-size: 12px;
+    }
+    .tab-row { display: flex; align-items: center; gap: 6px; margin-bottom: 4px; }
+    .tab-domain { font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 180px; }
+    .badge {
+      font-size: 10px; font-weight: 700; padding: 2px 7px;
+      border-radius: 10px; white-space: nowrap; flex-shrink: 0;
+    }
+    .badge-auto   { background: #1F5E3B; color: white; }
+    .badge-manual { background: #E8D8B8; color: #7A5020; }
+    .badge-active { background: #1F5E3B; color: white; }
+    /* ── Status box ── */
+    .status-box {
+      background: white; border-radius: 6px;
+      padding: 9px 11px; margin-bottom: 10px;
+      border: 1px solid #D8D0C4; font-size: 12px;
+    }
+    .status-row { display: flex; justify-content: space-between; margin-bottom: 3px; }
+    .status-label { color: #888; }
+    .status-val { font-weight: 600; }
+    .status-val.running { color: #1F5E3B; }
+    .status-val.paused  { color: #FF9800; }
+    .status-val.stopped, .status-val.idle { color: #888; }
+    /* ── Buttons ── */
+    .btn {
+      display: block; width: 100%; padding: 9px;
+      border-radius: 6px; border: none; font-size: 13px;
+      font-weight: 600; cursor: pointer; text-align: center;
+      margin-bottom: 6px; text-decoration: none; box-sizing: border-box;
+    }
+    .btn-activate { background: #1F5E3B; color: white; }
+    .btn-activate:hover { background: #3B7A57; }
+    .btn-ghost { background: white; color: #2B2B2B; border: 1.5px solid #D8D0C4; }
+    .btn-ghost:hover { background: #EEE8DE; }
+    .btn:disabled { opacity: 0.45; cursor: default; }
+    .hint { font-size: 11px; color: #888; text-align: center; margin-top: 6px; line-height: 1.4; }
+    .divider { border: none; border-top: 1px solid #D8D0C4; margin: 8px 0; }
+    .supported-sites {
+      font-size: 11px; color: #888; line-height: 1.6;
+      background: white; border: 1px solid #D8D0C4;
+      border-radius: 6px; padding: 8px 10px; margin-bottom: 8px;
+    }
+    .supported-sites strong { color: #2B2B2B; display: block; margin-bottom: 2px; }
+    #inject-status { font-size: 11px; color: #888; text-align: center; min-height: 16px; }
+    #inject-status.ok   { color: #1F5E3B; font-weight: 600; }
+    #inject-status.err  { color: #C62828; }
+  </style>
+</head>
+<body>
+  <div class="logo">
+    <svg width="22" height="22" viewBox="0 0 22 22"><circle cx="11" cy="11" r="10" fill="#1F5E3B"/><text x="11" y="16" text-anchor="middle" font-size="11" fill="#F5F1E8" font-family="Georgia,serif">言</text></svg>
+    Live Caption & Translate
+  </div>
+
+  <!-- Current tab -->
+  <div class="tab-info">
+    <div class="tab-row">
+      <span class="tab-domain" id="tab-domain">Loading…</span>
+      <span class="badge" id="tab-badge"></span>
+    </div>
+    <div id="tab-desc" style="color:#888;font-size:11px"></div>
+  </div>
+
+  <!-- Activate button (shown for non-auto sites) -->
+  <div id="activate-section">
+    <button class="btn btn-activate" id="btn-activate">⚡ Activate on this tab</button>
+    <div id="inject-status"></div>
+  </div>
+
+  <hr class="divider"/>
+
+  <!-- Session status -->
+  <div class="status-box">
+    <div class="status-row">
+      <span class="status-label">Status</span>
+      <span class="status-val" id="st-status">—</span>
+    </div>
+    <div class="status-row">
+      <span class="status-label">Elapsed</span>
+      <span class="status-val" id="st-elapsed">—</span>
+    </div>
+    <div class="status-row">
+      <span class="status-label">Model</span>
+      <span class="status-val" id="st-model">—</span>
+    </div>
+    <div class="status-row">
+      <span class="status-label">Segments</span>
+      <span class="status-val" id="st-segments">—</span>
+    </div>
+  </div>
+
+  <button class="btn btn-ghost" id="btn-options">⚙ Open Options</button>
+
+  <!-- Supported sites -->
+  <div class="supported-sites">
+    <strong>Auto-activated on:</strong>
+    Google Meet · Zoom · Teams · Webex · Whereby · Skype
+    <br><em>Use ⚡ Activate for any other site (YouTube, Discord, etc.)</em>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>
