@@ -1,0 +1,472 @@
+/**
+ * content/overlay.css — Live Caption & Translate overlay.
+ * All classes are prefixed with "ica-" to avoid conflicts with Google Meet styles.
+ * The root element uses contain: layout style paint to isolate rendering.
+ */
+
+/* ── Root overlay container ─────────────────────────────────────────────────── */
+
+#ica-overlay {
+  all: initial;
+  position: fixed;
+  top: 80px;
+  right: 16px;
+  width: 480px;
+  max-height: calc(100vh - 100px);
+  z-index: 2147483647;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+  font-size: 13px;
+  line-height: 1.45;
+  color: #2B2B2B;
+  display: flex;
+  flex-direction: column;
+  border-radius: 10px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.28), 0 2px 8px rgba(0,0,0,0.18);
+  overflow: hidden;
+  contain: layout style paint;
+  resize: both;
+  min-width: 320px;
+  min-height: 180px;
+}
+
+#ica-overlay.ica-collapsed {
+  max-height: 44px;
+  resize: none;
+}
+
+/* ── CSS variables ───────────────────────────────────────────────────────────── */
+
+#ica-overlay {
+  --ica-green-dark:  #1F5E3B;
+  --ica-green-mid:   #3B7A57;
+  --ica-wood:        #7A5C3E;
+  --ica-cream:       #F5F1E8;
+  --ica-accent:      #C49A6C;
+  --ica-bg:          #FAFAF6;
+  --ica-border:      #D8D0C4;
+  --ica-text:        #2B2B2B;
+  --ica-text-light:  #6A6A6A;
+  --ica-interim:     #7A5C3E;
+}
+
+/* ── Header ─────────────────────────────────────────────────────────────────── */
+
+.ica-header {
+  all: unset;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px;
+  background: var(--ica-green-dark);
+  color: #F5F1E8;
+  cursor: move;
+  user-select: none;
+  flex-shrink: 0;
+}
+
+.ica-header-title {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: #F5F1E8;
+}
+
+.ica-header-status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  color: #A8D8BF;
+  flex: 1;
+  padding: 0 10px;
+}
+
+.ica-rec-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #888;
+  flex-shrink: 0;
+}
+
+.ica-rec-dot.ica-rec-active {
+  background: #E53935;
+  box-shadow: 0 0 4px #E5393580;
+  animation: ica-pulse 1.2s ease-in-out infinite;
+}
+
+.ica-rec-dot.ica-rec-paused {
+  background: #FF9800;
+}
+
+@keyframes ica-pulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.4; }
+}
+
+.ica-header-btns {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+}
+
+.ica-icon-btn {
+  all: unset;
+  cursor: pointer;
+  width: 22px;
+  height: 22px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  color: #A8D8BF;
+  transition: background 0.1s;
+}
+
+.ica-icon-btn:hover { background: rgba(255,255,255,0.15); color: white; }
+
+/* ── Privacy note ────────────────────────────────────────────────────────────── */
+
+.ica-privacy {
+  all: unset;
+  display: block;
+  background: #F3F0E8;
+  border-bottom: 1px solid #E0D8C8;
+  padding: 4px 12px;
+  font-size: 11px;
+  color: #6B5A3E;
+  flex-shrink: 0;
+}
+
+/* ── Columns: English + Vietnamese ──────────────────────────────────────────── */
+
+.ica-columns {
+  all: unset;
+  display: flex;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+  border-bottom: 1px solid var(--ica-border);
+}
+
+.ica-col {
+  all: unset;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.ica-col + .ica-col {
+  border-left: 1px solid var(--ica-border);
+}
+
+.ica-col-header {
+  all: unset;
+  display: block;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--ica-green-dark);
+  background: #EEF5EE;
+  padding: 4px 10px;
+  border-bottom: 1px solid var(--ica-border);
+  flex-shrink: 0;
+}
+
+.ica-col-body {
+  all: unset;
+  display: block;
+  flex: 1;
+  overflow-y: auto;
+  padding: 8px 10px;
+  background: var(--ica-bg);
+  min-height: 80px;
+  max-height: 150px;
+  font-size: 13px;
+  color: var(--ica-text);
+  line-height: 1.5;
+}
+
+.ica-col-body::-webkit-scrollbar { width: 4px; }
+.ica-col-body::-webkit-scrollbar-track { background: transparent; }
+.ica-col-body::-webkit-scrollbar-thumb { background: #C8C0B8; border-radius: 2px; }
+
+.ica-segment {
+  all: unset;
+  display: block;
+  margin-bottom: 6px;
+  padding: 4px 6px;
+  border-radius: 4px;
+  color: var(--ica-text);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.ica-segment.ica-final {
+  background: #FFFFFF;
+  border-left: 2px solid var(--ica-green-mid);
+}
+
+.ica-segment.ica-interim {
+  color: var(--ica-interim);
+  font-style: italic;
+  opacity: 0.85;
+}
+
+.ica-timestamp {
+  font-size: 10px;
+  color: var(--ica-text-light);
+  margin-right: 4px;
+}
+
+/* Glossary term highlight */
+.ica-term {
+  border-bottom: 1.5px dashed var(--ica-accent);
+  cursor: help;
+  position: relative;
+}
+
+/* ── Summary panel ───────────────────────────────────────────────────────────── */
+
+.ica-summary-panel {
+  all: unset;
+  display: block;
+  background: #F0F5F0;
+  border-bottom: 1px solid var(--ica-border);
+  padding: 8px 12px;
+  flex-shrink: 0;
+}
+
+.ica-summary-label {
+  all: unset;
+  display: block;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--ica-green-dark);
+  margin-bottom: 4px;
+}
+
+.ica-summary-text {
+  all: unset;
+  display: block;
+  font-size: 12px;
+  color: var(--ica-text);
+  line-height: 1.5;
+  margin-bottom: 6px;
+}
+
+.ica-keywords {
+  all: unset;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-bottom: 6px;
+}
+
+.ica-keyword {
+  all: unset;
+  display: inline-block;
+  background: var(--ica-green-dark);
+  color: #F5F1E8;
+  font-size: 11px;
+  padding: 2px 8px;
+  border-radius: 10px;
+  cursor: default;
+}
+
+/* ── Notes ───────────────────────────────────────────────────────────────────── */
+
+.ica-notes-panel {
+  all: unset;
+  display: flex;
+  flex-direction: column;
+  border-bottom: 1px solid var(--ica-border);
+  flex-shrink: 0;
+}
+
+.ica-notes-label {
+  all: unset;
+  display: block;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--ica-wood);
+  background: #F8F3EB;
+  padding: 4px 12px;
+  border-bottom: 1px solid var(--ica-border);
+}
+
+.ica-notes-input {
+  all: unset;
+  display: block;
+  width: 100%;
+  padding: 8px 12px;
+  font-family: inherit;
+  font-size: 12px;
+  color: var(--ica-text);
+  background: #FDFBF7;
+  resize: none;
+  min-height: 50px;
+  max-height: 80px;
+  overflow-y: auto;
+  box-sizing: border-box;
+  line-height: 1.5;
+}
+
+.ica-notes-input:focus {
+  outline: none;
+  background: #FFFEF9;
+}
+
+/* ── Controls bar ────────────────────────────────────────────────────────────── */
+
+.ica-controls {
+  all: unset;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 10px;
+  background: #EEE8DE;
+  flex-shrink: 0;
+  flex-wrap: wrap;
+}
+
+.ica-btn {
+  all: unset;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 11px;
+  border-radius: 5px;
+  font-size: 12px;
+  font-weight: 600;
+  border: 1.5px solid transparent;
+  transition: background 0.12s, border-color 0.12s, opacity 0.12s;
+  user-select: none;
+  white-space: nowrap;
+}
+
+.ica-btn:active { opacity: 0.75; }
+
+.ica-btn:disabled, .ica-btn[disabled] { opacity: 0.4; pointer-events: none; }
+
+.ica-btn--start  { background: var(--ica-green-dark); color: #F5F1E8; }
+.ica-btn--start:hover { background: var(--ica-green-mid); }
+
+.ica-btn--pause  { background: #FF9800; color: white; }
+.ica-btn--pause:hover { background: #FB8C00; }
+
+.ica-btn--stop   { background: #555; color: white; }
+.ica-btn--stop:hover { background: #333; }
+
+.ica-btn--export { background: var(--ica-wood); color: #F5F1E8; }
+.ica-btn--export:hover { background: #5A3F28; }
+
+.ica-btn--clear  {
+  background: #E8E2D4;
+  color: var(--ica-wood);
+  margin-left: auto;
+}
+.ica-btn--clear:hover { background: #DCD4C0; }
+
+/* ── Error toast ─────────────────────────────────────────────────────────────── */
+
+.ica-toast {
+  all: unset;
+  display: none;
+  position: fixed;
+  bottom: 24px;
+  right: 520px;
+  background: #333;
+  color: white;
+  font-size: 12px;
+  padding: 8px 14px;
+  border-radius: 6px;
+  max-width: 280px;
+  z-index: 2147483647;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  animation: ica-fade-in 0.2s ease;
+}
+
+@keyframes ica-fade-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Export modal ────────────────────────────────────────────────────────────── */
+
+.ica-modal-backdrop {
+  all: unset;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  z-index: 2147483646;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ica-modal {
+  all: unset;
+  background: white;
+  border-radius: 10px;
+  padding: 24px;
+  width: 320px;
+  box-shadow: 0 16px 48px rgba(0,0,0,0.35);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-size: 13px;
+  color: #2B2B2B;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.ica-modal h3 {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--ica-green-dark);
+  margin: 0;
+}
+
+.ica-modal-btns {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.ica-modal-btn {
+  all: unset;
+  cursor: pointer;
+  padding: 10px 14px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border: 1.5px solid #D8D0C4;
+  background: #FAFAF8;
+  transition: background 0.12s;
+}
+
+.ica-modal-btn:hover { background: #F0EDE6; }
+
+.ica-modal-close {
+  all: unset;
+  cursor: pointer;
+  align-self: flex-end;
+  font-size: 20px;
+  color: #888;
+  line-height: 1;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.ica-modal-close:hover { background: #F0EDE6; color: #333; }

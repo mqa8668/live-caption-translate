@@ -1,0 +1,88 @@
+{
+  "manifest_version": 3,
+  "name": "Live Caption & Translate",
+  "short_name": "CaptionLive",
+  "version": "1.0.1",
+  "description": "Real-time captions and Vietnamese translation for Google Meet and video calls.",
+
+  "permissions": [
+    "storage",
+    "tabs",
+    "tabCapture",
+    "activeTab",
+    "scripting",
+    "offscreen",
+    "commands"
+  ],
+
+  "host_permissions": [
+    "*://meet.google.com/*",
+    "https://generativelanguage.googleapis.com/*",
+    "https://openrouter.ai/*"
+  ],
+
+  "background": {
+    "service_worker": "background.js"
+  },
+
+  "content_scripts": [
+    {
+      "matches": [
+        "*://meet.google.com/*",
+        "*://*.zoom.us/*",
+        "*://teams.microsoft.com/*",
+        "*://teams.live.com/*",
+        "*://*.webex.com/*",
+        "*://*.whereby.com/*",
+        "*://app.chime.aws/*",
+        "*://*.skype.com/*"
+      ],
+      "js": ["glossary.js", "content/overlay.js"],
+      "css": ["content/overlay.css"],
+      "run_at": "document_idle",
+      "all_frames": false
+    }
+  ],
+
+  "action": {
+    "default_title": "Live Caption & Translate",
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "assets/icon16.png",
+      "48": "assets/icon48.png",
+      "128": "assets/icon128.png"
+    }
+  },
+
+  "options_page": "options.html",
+
+  "commands": {
+    "toggle-listening": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+L",
+        "mac": "Command+Shift+L"
+      },
+      "description": "Toggle listening on/off"
+    },
+    "pause-session": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+P",
+        "mac": "Command+Shift+P"
+      },
+      "description": "Pause or resume session"
+    },
+    "clear-session": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+X",
+        "mac": "Command+Shift+X"
+      },
+      "description": "Stop and clear the current session"
+    }
+  },
+
+  "icons": {
+    "16": "assets/icon16.png",
+    "48": "assets/icon48.png",
+    "128": "assets/icon128.png"
+  }
+}

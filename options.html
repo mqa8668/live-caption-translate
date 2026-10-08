@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Live Caption & Translate — Settings</title>
+  <link rel="stylesheet" href="options.css" />
+</head>
+<body>
+  <div class="opt-container">
+    <header class="opt-header">
+      <div class="opt-logo">
+        <svg width="28" height="28" viewBox="0 0 28 28" fill="none" aria-hidden="true">
+          <circle cx="14" cy="14" r="13" fill="#1F5E3B"/>
+          <text x="14" y="19" text-anchor="middle" font-size="14" fill="#F5F1E8" font-family="Georgia,serif">言</text>
+        </svg>
+        <span>Live Caption & Translate</span>
+      </div>
+      <div class="opt-version">v1.0.0</div>
+    </header>
+
+    <div id="opt-saved-banner" class="opt-banner opt-banner--success" hidden>
+      Settings saved successfully.
+    </div>
+    <div id="opt-error-banner" class="opt-banner opt-banner--error" hidden></div>
+
+    <!-- API Keys -->
+    <section class="opt-section">
+      <h2>API Keys</h2>
+      <p class="opt-hint">Keys are stored locally (chrome.storage.local) and never transmitted to any third party.</p>
+
+      <div class="opt-field">
+        <label for="gemini-key">Gemini API Key <span class="opt-badge opt-badge--primary">Primary</span></label>
+        <div class="opt-input-row">
+          <input type="password" id="gemini-key" placeholder="AIzaSy..." autocomplete="off" />
+          <button class="opt-btn opt-btn--ghost" data-toggle="gemini-key" title="Show / hide">Show</button>
+          <button class="opt-btn opt-btn--ghost" id="test-gemini" title="Test connection">Test</button>
+        </div>
+        <span class="opt-hint">Get a free key at <a href="https://aistudio.google.com/app/apikey" target="_blank" rel="noopener">aistudio.google.com</a></span>
+      </div>
+
+      <div class="opt-field">
+        <label for="gemini-model">Gemini Model</label>
+        <select id="gemini-model">
+          <option value="gemini-2.5-flash">gemini-2.5-flash ✓ recommended</option>
+          <option value="gemini-2.5-flash-lite">gemini-2.5-flash-lite — lightest &amp; cheapest</option>
+          <option value="gemini-2.5-pro">gemini-2.5-pro — highest quality, slower</option>
+        </select>
+        <span class="opt-hint">
+          Custom model overrides the list above. Leave blank to use the selected option.
+          Browse all models at <a href="https://aistudio.google.com/models" target="_blank" rel="noopener">aistudio.google.com/models</a>
+        </span>
+        <div class="opt-input-row" style="margin-top:6px">
+          <input type="text" id="gemini-model-custom" placeholder="Leave blank to use dropdown" autocomplete="off" />
+          <button class="opt-btn opt-btn--ghost" id="clear-gemini-custom" title="Clear custom model">✕ Clear</button>
+        </div>
+        <div id="gemini-active-model" style="margin-top:4px;font-size:11px;color:#3B7A57;font-weight:600"></div>
+      </div>
+
+      <div class="opt-field">
+        <label for="openrouter-key">OpenRouter API Key <span class="opt-badge opt-badge--fallback">Fallback</span></label>
+        <div class="opt-input-row">
+          <input type="password" id="openrouter-key" placeholder="sk-or-..." autocomplete="off" />
+          <button class="opt-btn opt-btn--ghost" data-toggle="openrouter-key" title="Show / hide">Show</button>
+          <button class="opt-btn opt-btn--ghost" id="test-openrouter" title="Test connection">Test</button>
+        </div>
+        <span class="opt-hint">Get a key at <a href="https://openrouter.ai/keys" target="_blank" rel="noopener">openrouter.ai</a></span>
+      </div>
+
+      <div class="opt-field">
+        <label for="openrouter-model">OpenRouter Model</label>
+        <select id="openrouter-model">
+          <option value="openai/gpt-4o-mini">openai/gpt-4o-mini (fast, cheap)</option>
+          <option value="openai/gpt-4o">openai/gpt-4o (higher quality)</option>
+          <option value="openai/o4-mini">openai/o4-mini</option>
+          <option value="anthropic/claude-haiku-4-5">anthropic/claude-haiku-4-5 (fast)</option>
+          <option value="anthropic/claude-sonnet-4-5">anthropic/claude-sonnet-4-5</option>
+          <option value="google/gemini-2.0-flash-001">google/gemini-2.0-flash-001</option>
+          <option value="google/gemini-flash-1.5">google/gemini-flash-1.5</option>
+          <option value="meta-llama/llama-3.3-70b-instruct">meta-llama/llama-3.3-70b-instruct</option>
+        </select>
+        <span class="opt-hint">Custom overrides list. Leave blank to use dropdown. Browse at <a href="https://openrouter.ai/models" target="_blank" rel="noopener">openrouter.ai/models</a></span>
+        <div class="opt-input-row" style="margin-top:6px">
+          <input type="text" id="openrouter-model-custom" placeholder="Leave blank to use dropdown" autocomplete="off" />
+          <button class="opt-btn opt-btn--ghost" id="clear-or-custom" title="Clear custom model">✕ Clear</button>
+        </div>
+        <div id="or-active-model" style="margin-top:4px;font-size:11px;color:#3B7A57;font-weight:600"></div>
+      </div>
+    </section>
+
+    <!-- Language & Session -->
+    <section class="opt-section">
+      <h2>Language & Session</h2>
+
+      <div class="opt-field">
+        <label for="source-language">Source Language (spoken in meeting)</label>
+        <select id="source-language">
+          <option value="en-US">English (US)</option>
+          <option value="en-GB">English (UK)</option>
+          <option value="en-AU">English (AU)</option>
+          <option value="vi-VN">Vietnamese</option>
+          <option value="ja-JP">Japanese</option>
+          <option value="zh-CN">Chinese (Simplified)</option>
+          <option value="ko-KR">Korean</option>
+          <option value="fr-FR">French</option>
+          <option value="de-DE">German</option>
+        </select>
+      </div>
+
+      <div class="opt-field">
+        <label for="session-limit">Session Time Limit (minutes)</label>
+        <input type="number" id="session-limit" min="10" max="180" step="5" value="60" />
+        <span class="opt-hint">Session auto-stops at this limit. Max 180 min.</span>
+      </div>
+    </section>
+
+    <!-- Display -->
+    <section class="opt-section">
+      <h2>Display</h2>
+
+      <div class="opt-field opt-field--checkbox">
+        <input type="checkbox" id="show-interim" />
+        <label for="show-interim">Show interim (real-time) captions</label>
+      </div>
+
+      <div class="opt-field opt-field--checkbox">
+        <input type="checkbox" id="auto-scroll" checked />
+        <label for="auto-scroll">Auto-scroll captions to latest</label>
+      </div>
+
+      <div class="opt-field opt-field--checkbox">
+        <input type="checkbox" id="highlight-glossary" checked />
+        <label for="highlight-glossary">Highlight Elixir / DevOps glossary terms</label>
+      </div>
+    </section>
+
+    <!-- Privacy Note -->
+    <section class="opt-section">
+      <h2>Privacy</h2>
+      <p class="opt-hint">Let participants know you are captioning the call. Transcript text is sent to your configured LLM provider for translation.</p>
+    </section>
+
+    <div class="opt-actions">
+      <button class="opt-btn opt-btn--primary" id="save-btn">Save Settings</button>
+      <button class="opt-btn opt-btn--ghost" id="reset-btn">Reset to Defaults</button>
+    </div>
+  </div>
+
+  <script src="options.js"></script>
+</body>
+</html>
